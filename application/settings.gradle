@@ -1,0 +1,4 @@
+rootProject.name = projectName
+
+include 'app'
+include 'integration-tests'

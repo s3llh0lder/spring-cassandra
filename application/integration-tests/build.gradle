@@ -1,0 +1,58 @@
+plugins {
+    id 'example.java-application-conventions'
+    id "org.springframework.boot" version "$springbootPluginVersion"
+    id "io.spring.dependency-management" version "1.1.4"
+    id "net.linguica.maven-settings" version "0.5"
+    id 'idea'
+}
+
+group = projectGroup
+version = projectVersion
+
+sourceSets {
+    integrationTest {
+        java.srcDir 'src/integrationTest/java'
+        resources.srcDir 'src/integrationTest/resources'
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+dependencies {
+    implementation project(':app')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:cassandra'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    shouldRunAfter tasks.test
+}
+
+tasks.named("processIntegrationTestResources") {
+    duplicatesStrategy = 'INCLUDE'
+}
+
+integrationTest {
+    useJUnitPlatform()
+}
+
+
+check.dependsOn integrationTest

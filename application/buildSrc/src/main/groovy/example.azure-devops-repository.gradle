@@ -1,0 +1,10 @@
+plugins {
+    id 'net.linguica.maven-settings'
+}
+
+repositories {
+    // Ensure mavenCentral is available for Spring Boot dependencies
+    mavenCentral()
+    // Keep mavenLocal for local artifacts
+    mavenLocal()       // This points to local maven repo
+}
