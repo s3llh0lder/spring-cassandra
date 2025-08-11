@@ -1,13 +1,14 @@
 package example.config;
 
-import example.model.PostByUser;
-import example.model.PostByUserKey;
-import example.model.User;
-import example.model.UserStats;
-import example.request.CreatePostRequest;
-import example.request.CreateUserRequest;
-import example.request.UpdatePostRequest;
+import example.domain.model.PostByUser;
+import example.domain.model.PostByUserKey;
+import example.domain.model.User;
+import example.domain.model.UserStats;
+import example.domain.ports.input.CreatePostRequest;
+import example.domain.ports.input.CreateUserRequest;
+import example.domain.ports.input.UpdatePostRequest;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
@@ -20,8 +21,8 @@ public class TestDataBuilder {
         user.setId(UUID.randomUUID());
         user.setName("Test User");
         user.setEmail("test@example.com");
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
+        user.setCreatedAt(OffsetDateTime.now());
+        user.setUpdatedAt(OffsetDateTime.now());
         return user;
     }
 
@@ -33,7 +34,7 @@ public class TestDataBuilder {
     }
 
     public static PostByUser createDefaultPostByUser(UUID userId) {
-        Date now = new Date();
+        OffsetDateTime now = OffsetDateTime.now();
         PostByUserKey key = new PostByUserKey(userId, now, UUID.randomUUID());
         PostByUser post = new PostByUser();
         post.setKey(key);

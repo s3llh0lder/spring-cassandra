@@ -1,8 +1,8 @@
 package example.config;
 
-import example.model.PostByUser;
-import example.model.User;
-import example.model.UserStats;
+import example.domain.model.PostByUser;
+import example.domain.model.User;
+import example.domain.model.UserStats;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,12 +1,12 @@
 package example.integration;
 
-import example.model.User;
-import example.repository.UserByEmailRepository;
-import example.repository.UserRepository;
-import example.repository.UserStatsRepository;
-import example.request.CreateUserRequest;
-import example.request.UpdateUserRequest;
-import example.request.UserWithStats;
+import example.domain.model.User;
+import example.domain.repository.UserByEmailRepository;
+import example.domain.repository.UserRepository;
+import example.domain.repository.UserStatsRepository;
+import example.domain.ports.input.CreateUserRequest;
+import example.domain.ports.input.UpdateUserRequest;
+import example.domain.ports.input.UserWithStats;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

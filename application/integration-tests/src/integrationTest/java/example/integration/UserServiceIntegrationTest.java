@@ -1,17 +1,17 @@
 package example.integration;
 
 
-import example.exception.EmailAlreadyExistsException;
-import example.model.User;
-import example.model.UserByEmail;
-import example.model.UserStats;
-import example.repository.UserByEmailRepository;
-import example.repository.UserRepository;
-import example.repository.UserStatsRepository;
-import example.request.CreateUserRequest;
-import example.request.UpdateUserRequest;
-import example.request.UserWithStats;
-import example.service.UserService;
+import example.domain.exceptions.EmailAlreadyExistsException;
+import example.domain.model.User;
+import example.domain.model.UserByEmail;
+import example.domain.model.UserStats;
+import example.domain.repository.UserByEmailRepository;
+import example.domain.repository.UserRepository;
+import example.domain.repository.UserStatsRepository;
+import example.domain.ports.input.CreateUserRequest;
+import example.domain.ports.input.UpdateUserRequest;
+import example.domain.ports.input.UserWithStats;
+import example.domain.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

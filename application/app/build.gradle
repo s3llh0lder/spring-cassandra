@@ -9,9 +9,16 @@ group = projectGroup
 version = projectVersion
 
 dependencies {
+
+    implementation project(':domain')
+    implementation project(':api:generated')
+    implementation project(':adapters:input:web')
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

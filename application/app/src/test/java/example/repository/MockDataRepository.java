@@ -1,9 +1,10 @@
 package example.repository;
 
-import example.model.*;
+import example.domain.model.*;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -31,9 +32,9 @@ public class MockDataRepository {
             user.setId(UUID.randomUUID());
         }
         if (user.getCreatedAt() == null) {
-            user.setCreatedAt(new Date());
+            user.setCreatedAt(OffsetDateTime.now());
         }
-        user.setUpdatedAt(new Date());
+        user.setUpdatedAt(OffsetDateTime.now());
         users.put(user.getId(), user);
         return user;
     }
@@ -48,9 +49,9 @@ public class MockDataRepository {
             post.getKey().setPostId(UUID.randomUUID());
         }
         if (post.getCreatedAt() == null) {
-            post.setCreatedAt(new Date());
+            post.setCreatedAt(OffsetDateTime.now());
         }
-        post.setUpdatedAt(new Date());
+        post.setUpdatedAt(OffsetDateTime.now());
         postsByUser.put(post.getKey(), post);
         return post;
     }
@@ -60,9 +61,9 @@ public class MockDataRepository {
             post.setPostId(UUID.randomUUID());
         }
         if (post.getCreatedAt() == null) {
-            post.setCreatedAt(new Date());
+            post.setCreatedAt(OffsetDateTime.now());
         }
-        post.setUpdatedAt(new Date());
+        post.setUpdatedAt(OffsetDateTime.now());
         postsById.put(post.getPostId(), post);
         return post;
     }

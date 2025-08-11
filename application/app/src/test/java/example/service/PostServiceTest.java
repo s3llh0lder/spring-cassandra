@@ -1,11 +1,12 @@
 package example.service;
 
-import example.exception.PostNotFoundException;
-import example.exception.UserNotFoundException;
-import example.model.*;
-import example.repository.*;
-import example.request.CreatePostRequest;
-import example.request.UpdatePostRequest;
+import example.domain.model.*;
+import example.domain.repository.*;
+import example.domain.services.PostService;
+import example.domain.exceptions.PostNotFoundException;
+import example.domain.exceptions.UserNotFoundException;
+import example.domain.ports.input.CreatePostRequest;
+import example.domain.ports.input.UpdatePostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

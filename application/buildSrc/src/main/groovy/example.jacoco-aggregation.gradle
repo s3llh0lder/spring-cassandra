@@ -1,6 +1,6 @@
 // see https://docs.gradle.org/current/samples/sample_jvm_multi_project_with_code_coverage.html
 plugins {
-    id 'example.azure-devops-repository'
+    id 'example.repository'
     id 'java'
     id 'jacoco'
 }

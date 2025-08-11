@@ -1,4 +1,10 @@
 rootProject.name = projectName
 
+include 'api:specification'
+include 'api:generated'
+include 'adapters:input:web'
 include 'app'
+
 include 'integration-tests'
+
+include 'domain'

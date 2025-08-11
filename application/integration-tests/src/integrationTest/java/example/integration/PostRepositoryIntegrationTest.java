@@ -1,11 +1,11 @@
 package example.integration;
 
-import example.model.PostById;
-import example.model.PostByUser;
-import example.model.PostByUserStatus;
-import example.repository.PostByIdRepository;
-import example.repository.PostByUserRepository;
-import example.repository.PostByUserStatusRepository;
+import example.domain.model.PostById;
+import example.domain.model.PostByUser;
+import example.domain.model.PostByUserStatus;
+import example.domain.repository.PostByIdRepository;
+import example.domain.repository.PostByUserRepository;
+import example.domain.repository.PostByUserStatusRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

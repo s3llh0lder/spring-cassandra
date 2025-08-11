@@ -1,5 +1,5 @@
 plugins {
-    id 'example.azure-devops-repository'
+    id 'example.repository'
     id 'java'
     id "jacoco"
 //    id 'org.owasp.dependencycheck'

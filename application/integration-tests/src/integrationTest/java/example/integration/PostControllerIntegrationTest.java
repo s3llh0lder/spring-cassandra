@@ -1,11 +1,12 @@
 package example.integration;
 
-import example.model.PostById;
-import example.model.PostByUser;
-import example.model.User;
-import example.request.CreatePostRequest;
-import example.request.CreateUserRequest;
-import example.service.UserService;
+import example.domain.model.PostById;
+import example.domain.model.PostByUser;
+import example.domain.model.User;
+import example.domain.ports.input.CreatePostRequest;
+import example.domain.ports.input.CreateUserRequest;
+
+import example.domain.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ class PostControllerIntegrationTest extends BaseCassandraIntegrationTest {
 
         // When
         ResponseEntity<PostByUser> response = restTemplate.postForEntity(
-                "/api/users/" + testUser.getId() + "/posts", request, PostByUser.class);
+                "/api/v1/users/" + testUser.getId() + "/posts", request, PostByUser.class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -74,12 +75,12 @@ class PostControllerIntegrationTest extends BaseCassandraIntegrationTest {
         request2.setTitle("Post 2");
         request2.setContent("Content 2");
 
-        restTemplate.postForEntity("/api/users/" + testUser.getId() + "/posts", request1, PostByUser.class);
-        restTemplate.postForEntity("/api/users/" + testUser.getId() + "/posts", request2, PostByUser.class);
+        restTemplate.postForEntity("/api/v1/users/" + testUser.getId() + "/posts", request1, PostByUser.class);
+        restTemplate.postForEntity("/api/v1/users/" + testUser.getId() + "/posts", request2, PostByUser.class);
 
         // When
         ResponseEntity<PostByUser[]> response = restTemplate.getForEntity(
-                "/api/users/" + testUser.getId() + "/posts", PostByUser[].class);
+                "/api/v1/users/" + testUser.getId() + "/posts", PostByUser[].class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -93,11 +94,11 @@ class PostControllerIntegrationTest extends BaseCassandraIntegrationTest {
         createRequest.setTitle("Get Test Post");
         createRequest.setContent("Content");
         ResponseEntity<PostByUser> createResponse = restTemplate.postForEntity(
-                "/api/users/" + testUser.getId() + "/posts", createRequest, PostByUser.class);
+                "/api/v1/users/" + testUser.getId() + "/posts", createRequest, PostByUser.class);
         UUID postId = createResponse.getBody().getPostId();
 
         // When
-        ResponseEntity<PostById> response = restTemplate.getForEntity("/api/posts/" + postId, PostById.class);
+        ResponseEntity<PostById> response = restTemplate.getForEntity("/api/v1/posts/" + postId, PostById.class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -114,14 +115,14 @@ class PostControllerIntegrationTest extends BaseCassandraIntegrationTest {
         createRequest.setContent("Content");
         createRequest.setStatus("DRAFT");
         ResponseEntity<PostByUser> createResponse = restTemplate.postForEntity(
-                "/api/users/" + testUser.getId() + "/posts", createRequest, PostByUser.class);
+                "/api/v1/users/" + testUser.getId() + "/posts", createRequest, PostByUser.class);
         UUID postId = createResponse.getBody().getPostId();
 
 
         logger.info("Created post with ID: {} and status: {}", postId, createResponse.getBody().getStatus());
 
         // When
-        restTemplate.put("/api/users/" + testUser.getId() + "/posts/" + postId + "/publish", null);
+        restTemplate.put("/api/v1/users/" + testUser.getId() + "/posts/" + postId + "/publish", null);
         ResponseEntity<PostById> getResponse = restTemplate.getForEntity("/api/posts/" + postId, PostById.class);
 
         // Then
@@ -136,11 +137,11 @@ class PostControllerIntegrationTest extends BaseCassandraIntegrationTest {
         createRequest.setTitle("Delete Test Post");
         createRequest.setContent("Content");
         ResponseEntity<PostByUser> createResponse = restTemplate.postForEntity(
-                "/api/users/" + testUser.getId() + "/posts", createRequest, PostByUser.class);
+                "/api/v1/users/" + testUser.getId() + "/posts", createRequest, PostByUser.class);
         UUID postId = createResponse.getBody().getPostId();
 
         // When
-        restTemplate.delete("/api/users/" + testUser.getId() + "/posts/" + postId);
+        restTemplate.delete("/api/v1/users/" + testUser.getId() + "/posts/" + postId);
         ResponseEntity<PostById> getResponse = restTemplate.getForEntity("/api/posts/" + postId, PostById.class);
 
         // Then

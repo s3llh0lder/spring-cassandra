@@ -1,12 +1,12 @@
 package example.performance;
 
 import example.integration.BaseCassandraIntegrationTest;
-import example.model.PostByUser;
-import example.model.User;
-import example.request.CreatePostRequest;
-import example.request.CreateUserRequest;
-import example.service.PostService;
-import example.service.UserService;
+import example.domain.model.PostByUser;
+import example.domain.model.User;
+import example.domain.ports.input.CreatePostRequest;
+import example.domain.ports.input.CreateUserRequest;
+import example.domain.services.PostService;
+import example.domain.services.UserService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;

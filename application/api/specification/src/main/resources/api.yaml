@@ -1,0 +1,680 @@
+openapi: 3.0.1
+info:
+  title: Spring Cassandra Example API
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@example.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Spring Cassandra
+  url: http://example.com
+servers:
+  - url: https://example.com/api/v1
+
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Register a new user
+      description: Save a new user to the database with userID reference
+      operationId: createUser
+      requestBody:
+        description: The user registration with userID to be saved
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        201:
+          description: User successfully created
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /users/{userId}:
+    get:
+      tags:
+        - users
+      summary: Get user by ID
+      description: Retrieve a user by their UUID
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - users
+      summary: Update user
+      description: Update an existing user's information
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: The user data to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      responses:
+        200:
+          description: User successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /users/{userId}/stats:
+    get:
+      tags:
+        - users
+      summary: Get user with statistics
+      description: Retrieve a user with their associated statistics
+      operationId: getUserWithStats
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: User with stats found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithStats'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /users/{userId}/posts:
+    get:
+      tags:
+        - posts
+      summary: Get user posts
+      description: Retrieve posts for a specific user with optional filtering
+      operationId: getUserPosts
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Filter posts by status
+      responses:
+        200:
+          description: List of user posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostByUser'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - posts
+      summary: Create a new post for a user
+      description: Create a new post associated with a specific user
+      operationId: createPost
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: The post data to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostRequest"
+      responses:
+        201:
+          description: Post successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostByUser'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /posts/{postId}:
+    get:
+      tags:
+        - posts
+      summary: Get post by ID
+      description: Retrieve a specific post by its ID
+      operationId: getPost
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Post found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostById'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /users/{userId}/posts/{postId}:
+    put:
+      tags:
+        - posts
+      summary: Update a post
+      description: Update an existing post for a specific user
+      operationId: updatePost
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: The post data to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePostRequest"
+      responses:
+        200:
+          description: Post successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostByUser'
+        400:
+          $ref: '#/components/responses/InvalidRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - posts
+      summary: Delete a post
+      description: Delete an existing post for a specific user
+      operationId: deletePost
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: Post successfully deleted
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /users/{userId}/posts/{postId}/publish:
+    put:
+      tags:
+        - posts
+      summary: Publish a post
+      description: Publish a draft post
+      operationId: publishPost
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Post successfully published
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostByUser'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /migrations/status:
+    get:
+      tags:
+        - migrations
+      summary: Get migration status
+      description: Retrieve the status of all database migrations
+      operationId: getMigrationStatus
+      responses:
+        200:
+          description: Migration status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MigrationInfo'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /migrations/run:
+    post:
+      tags:
+        - migrations
+      summary: Run migrations
+      description: Execute pending database migrations
+      operationId: runMigrations
+      responses:
+        200:
+          description: Migrations completed successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Migrations completed successfully"
+        500:
+          description: Migration failed
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Migration failed: error message"
+
+components:
+
+  parameters:
+
+    languageParam:
+      name: Accept-Language
+      description: The language
+      in: header
+      required: true
+      schema:
+        type: string
+        description: language
+        enum:
+          - en
+
+  responses:
+
+    InvalidRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    Forbidden:
+      description: Not authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    Unauthorized:
+      description: Not authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    NotFound:
+      description: Object not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    InternalServerError:
+      description: Technical error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Audit:
+      type: object
+      required:
+        - createdBy
+        - createdOn
+        - updatedBy
+        - updatedOn
+      properties:
+        createdBy:
+          $ref: '#/components/schemas/User'
+        createdOn:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+        updatedBy:
+          $ref: '#/components/schemas/User'
+        updatedOn:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+        updatedAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+
+    CreateUserRequest:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+
+    UserWithStats:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - createdAt
+        - updatedAt
+        - stats
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+        updatedAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+        stats:
+          type: object
+          description: User statistics data
+          additionalProperties: true
+
+    PostByUser:
+      type: object
+      required:
+        - id
+        - userId
+        - title
+        - content
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, archived]
+        createdAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+        updatedAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+
+    PostById:
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, archived]
+        author:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+        updatedAt:
+          type: string
+          format: date-time
+          description: A date like 2018-03-20T09:12:28Z
+
+    CreatePostRequest:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+          enum: [draft, published]
+          default: draft
+
+    UpdatePostRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, archived]
+
+    MigrationInfo:
+      type: object
+      required:
+        - name
+        - status
+      properties:
+        name:
+          type: string
+          description: Name of the migration
+        status:
+          type: string
+          enum: [pending, completed, failed]
+          description: Current status of the migration
+        executedAt:
+          type: string
+          format: date-time
+          description: When the migration was executed
+          nullable: true
+        errorMessage:
+          type: string
+          description: Error message if migration failed
+          nullable: true
+
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |
+            An absolute URI that identifies the problem type.  When dereferenced,
+            it SHOULD provide human-readable documentation for the problem type
+            (e.g., using HTML).
+          default: 'about:blank'
+          example: 'https://example.com/problem/constraint-violation'
+        title:
+          type: string
+          description: |
+            A short, summary of the problem type. Written in english and readable
+            for engineers (usually not suited for non technical stakeholders and
+            not localized); example: Service Unavailable
+        status:
+          type: integer
+          format: int32
+          description: |
+            The HTTP status code generated by the origin server for this occurrence
+            of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+          example: 503
+        detail:
+          type: string
+          description: |
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: Connection to database timed out
+        instance:
+          type: string
+          format: uri
+          description: |
+            An absolute URI that identifies the specific occurrence of the problem.
+            It may or may not yield further information if dereferenced.

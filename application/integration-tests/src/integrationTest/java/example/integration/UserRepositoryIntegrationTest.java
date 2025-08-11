@@ -1,11 +1,11 @@
 package example.integration;
 
-import example.model.User;
-import example.model.UserByEmail;
-import example.model.UserStats;
-import example.repository.UserByEmailRepository;
-import example.repository.UserRepository;
-import example.repository.UserStatsRepository;
+import example.domain.model.User;
+import example.domain.model.UserByEmail;
+import example.domain.model.UserStats;
+import example.domain.repository.UserByEmailRepository;
+import example.domain.repository.UserRepository;
+import example.domain.repository.UserStatsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
