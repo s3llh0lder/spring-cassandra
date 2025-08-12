@@ -1,0 +1,23 @@
+plugins {
+    id 'example.java-library-conventions'
+    id "net.linguica.maven-settings" version "0.5"
+    id "org.springframework.boot" version "$springbootPluginVersion"
+    id "io.spring.dependency-management" version "1.1.7"
+}
+
+group = projectGroup
+version = projectVersion
+
+
+
+dependencies {
+
+ implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

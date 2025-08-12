@@ -6,7 +6,6 @@ import example.domain.model.User;
 import example.domain.ports.input.CreateUserRequest;
 import example.domain.ports.input.UpdateUserRequest;
 import example.domain.ports.input.UserPort;
-
 import example.domain.ports.input.UserWithStats;
 import example.spring_cassandra.api.controller.UsersApi;
 import example.spring_cassandra.api.model.CreateUserRequestDto;
@@ -19,14 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/v1")
+@RequestMapping("/api/v1")
 public class UserAdapter implements UsersApi {
 
     @Autowired
@@ -113,30 +111,28 @@ public class UserAdapter implements UsersApi {
 
     private UserWithStatsDto convertToUserWithStatsDto(UserWithStats userWithStats) {
         UserWithStatsDto dto = new UserWithStatsDto();
-        dto.setId(userWithStats.getUser().getId());
-        dto.setName(userWithStats.getUser().getName());
-        dto.setEmail(userWithStats.getUser().getEmail());
-        
-        if (userWithStats.getUser().getCreatedAt() != null) {
-            dto.setCreatedAt(userWithStats.getUser().getCreatedAt());
-        }
-        if (userWithStats.getUser().getUpdatedAt() != null) {
-            dto.setUpdatedAt(userWithStats.getUser().getUpdatedAt());
-        }
-        
+
+        // Set the nested user object
+        UserDto userDto = convertToUserDto(userWithStats.getUser());
+        dto.setUser(userDto);
+
+        // Set the stats object
         if (userWithStats.getStats() != null) {
             Map<String, Object> statsMap = new HashMap<>();
             statsMap.put("totalPosts", userWithStats.getStats().getTotalPosts());
-//            statsMap.put("totalViews", userWithStats.getStats().getTotalViews());
+            statsMap.put("publishedPosts", userWithStats.getStats().getPublishedPosts());
+            statsMap.put("draftPosts", userWithStats.getStats().getDraftPosts());
+
             if (userWithStats.getStats().getLastPostDate() != null) {
-                statsMap.put("createdAt", userWithStats.getStats().getLastPostDate());
+                statsMap.put("lastPostDate", userWithStats.getStats().getLastPostDate());
             }
             if (userWithStats.getStats().getUpdatedAt() != null) {
                 statsMap.put("updatedAt", userWithStats.getStats().getUpdatedAt());
             }
+
             dto.setStats(statsMap);
         }
-        
+
         return dto;
     }
 }

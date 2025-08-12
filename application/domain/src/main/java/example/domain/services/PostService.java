@@ -47,6 +47,11 @@ public class PostService implements PostPort {
         PostByUser postByUser = new PostByUser(userId, request.getTitle(), request.getContent());
         postByUser.setStatus("DRAFT");
 
+        // Set tags if provided
+        if (request.getTags() != null) {
+            postByUser.setTags(request.getTags());
+        }
+
         // Save to posts_by_user table
         PostByUser savedPost = postByUserRepository.save(postByUser);
 
@@ -85,7 +90,9 @@ public class PostService implements PostPort {
         if (request.getStatus() != null) {
             existingPost.setStatus(request.getStatus());
         }
-        // Tags are not part of the PostPort interface
+        if (request.getTags() != null) {
+            existingPost.setTags(request.getTags());
+        }
 
         // Save to posts_by_user table
         PostByUser updatedPost = postByUserRepository.save(existingPost);
@@ -108,14 +115,11 @@ public class PostService implements PostPort {
             // Update stats
             updateUserStats(userId, oldStatus, false);
             updateUserStats(userId, updatedPost.getStatus(), true);
-
-
         } else {
             // Status didn't change, just update existing entry
             PostByUserStatus statusPost = PostByUserStatus.fromPostByUser(updatedPost);
             postByUserStatusRepository.save(statusPost);
         }
-
         return updatedPost;
     }
 

@@ -1,0 +1,51 @@
+plugins {
+    id 'example.java-library-conventions'
+    id "net.linguica.maven-settings" version "0.5"
+    id "org.openapi.generator" version "7.2.0"
+    id "io.spring.dependency-management" version "1.1.7"
+    id "org.springframework.boot" version "$springbootPluginVersion"
+}
+
+group = projectGroup
+version = projectVersion
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'jakarta.validation:jakarta.validation-api'
+
+    api 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    api 'org.openapitools:jackson-databind-nullable:0.2.6'
+}
+
+apply plugin: 'org.openapi.generator'
+
+// see https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-gradle-plugin
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/api/specification/src/main/resources/api.yaml"
+    outputDir = "$buildDir/generated/openapi"
+    modelNameSuffix = "Dto"
+    validateSpec = true
+    configOptions = [
+            title          : "${rootProject.name}-api",
+            artifactId     : "${rootProject.name}-api",
+            basePackage    : "${group}.${rootProject.name}.api",
+            apiPackage     : "${group}.${rootProject.name}.api.controller",
+            invokerPackage : "${group}.${rootProject.name}.api.invoker",
+            modelPackage   : "${group}.${rootProject.name}.api.model",
+            interfaceOnly  : "true",
+            useTags        : "true",
+            dateLibrary    : "java8",
+            useSpringBoot3 : "true"
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "$buildDir/generated/openapi/src/main/java"
+        }
+    }
+}
+
+compileJava.dependsOn tasks.openApiGenerate

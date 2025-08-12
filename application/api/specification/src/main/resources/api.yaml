@@ -498,28 +498,11 @@ components:
     UserWithStats:
       type: object
       required:
-        - id
-        - name
-        - email
-        - createdAt
-        - updatedAt
+        - user
         - stats
       properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        email:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-          description: A date like 2018-03-20T09:12:28Z
-        updatedAt:
-          type: string
-          format: date-time
-          description: A date like 2018-03-20T09:12:28Z
+        user:
+          $ref: '#/components/schemas/User'
         stats:
           type: object
           description: User statistics data
@@ -548,7 +531,12 @@ components:
           type: string
         status:
           type: string
-          enum: [draft, published, archived]
+          enum: [DRAFT, PUBLISHED, ARCHIVED]
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the post
         createdAt:
           type: string
           format: date-time
@@ -577,7 +565,12 @@ components:
           type: string
         status:
           type: string
-          enum: [draft, published, archived]
+          enum: [DRAFT, PUBLISHED, ARCHIVED]
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the post
         author:
           $ref: '#/components/schemas/User'
         createdAt:
@@ -601,8 +594,13 @@ components:
           type: string
         status:
           type: string
-          enum: [draft, published]
-          default: draft
+          enum: [DRAFT, PUBLISHED]
+          default: DRAFT
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the post
 
     UpdatePostRequest:
       type: object
@@ -613,7 +611,12 @@ components:
           type: string
         status:
           type: string
-          enum: [draft, published, archived]
+          enum: [DRAFT, PUBLISHED, ARCHIVED]
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the post
 
     MigrationInfo:
       type: object
@@ -626,7 +629,7 @@ components:
           description: Name of the migration
         status:
           type: string
-          enum: [pending, completed, failed]
+          enum: [PENDING, COMPLETED, FAILED]
           description: Current status of the migration
         executedAt:
           type: string

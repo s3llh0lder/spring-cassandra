@@ -156,15 +156,19 @@ class PostServiceIntegrationTest extends BaseCassandraIntegrationTest {
         CreatePostRequest draftRequest = new CreatePostRequest();
         draftRequest.setTitle("Draft");
         draftRequest.setContent("Draft content");
-        draftRequest.setStatus("DRAFT");
+        // No need to set status - it will be DRAFT by default
 
         CreatePostRequest publishedRequest = new CreatePostRequest();
         publishedRequest.setTitle("Published");
         publishedRequest.setContent("Published content");
-        publishedRequest.setStatus("PUBLISHED");
+        // No need to set status - it will be DRAFT by default
 
-        postService.createPost(testUser.getId(), draftRequest);
-        postService.createPost(testUser.getId(), publishedRequest);
+        // Create both posts (both will start as DRAFT)
+        PostByUser draftPost = postService.createPost(testUser.getId(), draftRequest);
+        PostByUser publishedPost = postService.createPost(testUser.getId(), publishedRequest);
+
+        // Now publish one of them
+        postService.publishPost(testUser.getId(), publishedPost.getPostId());
 
         // When
         List<PostByUser> draftPosts = postService.getUserPostsByStatus(testUser.getId(), "DRAFT");

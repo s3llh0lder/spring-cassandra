@@ -6,10 +6,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Table("posts_by_user_status")
 public class PostByUserStatus {
@@ -19,7 +16,7 @@ public class PostByUserStatus {
 
     private String title;
     private String content;
-    private Set<String> tags;
+    private List<String> tags;
 //    @Column("updated_at")
     @CassandraType(type = CassandraType.Name.TIMESTAMP)
     private OffsetDateTime updatedAt;
@@ -32,7 +29,7 @@ public class PostByUserStatus {
         this.key = new PostByUserStatusKey(userId, status, now, UUID.randomUUID());
         this.title = title;
         this.content = content;
-        this.tags = new HashSet<>();
+        this.tags = new ArrayList<>();
         this.updatedAt = OffsetDateTime.now();
     }
 
@@ -47,7 +44,7 @@ public class PostByUserStatus {
         );
         postByStatus.title = postByUser.getTitle();
         postByStatus.content = postByUser.getContent();
-        postByStatus.tags = postByUser.getTags() != null ? new HashSet<>(postByUser.getTags()) : new HashSet<>();
+        postByStatus.tags = postByUser.getTags() != null ? new ArrayList<>(postByUser.getTags()) : new ArrayList<>();
         postByStatus.updatedAt = postByUser.getUpdatedAt();
         return postByStatus;
     }
@@ -79,11 +76,11 @@ public class PostByUserStatus {
         this.updatedAt = OffsetDateTime.now();
     }
 
-    public Set<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 

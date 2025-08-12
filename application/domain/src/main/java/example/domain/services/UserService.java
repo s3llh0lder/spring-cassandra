@@ -108,14 +108,7 @@ public class UserService implements UserPort {
         UserStats stats = userStatsRepository.findById(userId)
                 .orElse(new UserStats(userId));
 
-        // Convert domain model to port model
-        UserStats portStats = new UserStats();
-        portStats.setUserId(stats.getUserId());
-        portStats.setTotalPosts(stats.getTotalPosts());
-//        portStats.setTotalViews(stats.getTotalViews());
-//        portStats.setCreatedAt(stats.getCreatedAt());
-        portStats.setUpdatedAt(stats.getUpdatedAt());
-        
-        return new UserWithStats(user, portStats);
+        // Return the domain objects directly - no conversion needed
+        return new UserWithStats(user, stats);
     }
 }

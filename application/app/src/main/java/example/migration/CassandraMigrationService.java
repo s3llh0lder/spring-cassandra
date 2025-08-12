@@ -12,6 +12,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -266,7 +269,6 @@ public class CassandraMigrationService {
         }
     }
 
-    // FIXED: Remove the WHERE clause that was causing the ALLOW FILTERING error
     private Set<String> getAppliedMigrations() {
         try {
             // Query all migration records and filter in Java instead of Cassandra
@@ -294,10 +296,13 @@ public class CassandraMigrationService {
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
 
+        // Convert OffsetDateTime to Instant for storage
+        Instant appliedAtInstant = record.getAppliedAt().toInstant();
+
         cqlSession.execute(insertCql,
                 record.getVersion(),
                 record.getDescription(),
-                record.getAppliedAt(),
+                appliedAtInstant, // Store as Instant in Cassandra
                 record.getAppliedBy(),
                 record.isSuccess(),
                 record.getErrorMessage(),

@@ -1,12 +1,14 @@
 package example.migration;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public class MigrationRecord {
     private String version;
     private String description;
-    private Instant appliedAt;
+    private OffsetDateTime appliedAt;
     private String appliedBy;
     private boolean success;
     private String errorMessage;
@@ -15,7 +17,7 @@ public class MigrationRecord {
     public MigrationRecord(String version, String description) {
         this.version = version;
         this.description = description;
-        this.appliedAt = Instant.now();
+        this.appliedAt = OffsetDateTime.now();
         this.appliedBy = System.getProperty("user.name", "unknown");
         this.success = false;
         this.errorMessage = null;
@@ -29,8 +31,8 @@ public class MigrationRecord {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Instant getAppliedAt() { return appliedAt; }
-    public void setAppliedAt(Instant appliedAt) { this.appliedAt = appliedAt; }
+    public OffsetDateTime getAppliedAt() { return appliedAt; }
+    public void setAppliedAt(OffsetDateTime appliedAt) { this.appliedAt = appliedAt; }
 
     public String getAppliedBy() { return appliedBy; }
     public void setAppliedBy(String appliedBy) { this.appliedBy = appliedBy; }
@@ -64,10 +66,10 @@ public class MigrationRecord {
         public static class MigrationInfo {
             private final String name;
             private final String status;
-            private final java.time.LocalDateTime executedAt;
+            private final LocalDateTime executedAt;
             private final String errorMessage;
 
-            public MigrationInfo(String name, String status, java.time.LocalDateTime executedAt, String errorMessage) {
+            public MigrationInfo(String name, String status, LocalDateTime executedAt, String errorMessage) {
                 this.name = name;
                 this.status = status;
                 this.executedAt = executedAt;
@@ -82,7 +84,7 @@ public class MigrationRecord {
                 return status;
             }
 
-            public java.time.LocalDateTime getExecutedAt() {
+            public LocalDateTime getExecutedAt() {
                 return executedAt;
             }
 

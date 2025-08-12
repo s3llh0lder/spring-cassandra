@@ -50,7 +50,7 @@ class UserControllerIntegrationTest extends BaseCassandraIntegrationTest {
         request.setEmail("api.test@example.com");
 
         // When
-        ResponseEntity<User> response = restTemplate.postForEntity("/api/users", request, User.class);
+        ResponseEntity<User> response = restTemplate.postForEntity("/api/v1/users", request, User.class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -66,14 +66,14 @@ class UserControllerIntegrationTest extends BaseCassandraIntegrationTest {
         CreateUserRequest request1 = new CreateUserRequest();
         request1.setName("User One");
         request1.setEmail("duplicate@example.com");
-        restTemplate.postForEntity("/api/users", request1, User.class);
+        restTemplate.postForEntity("/api/v1/users", request1, User.class);
 
         CreateUserRequest request2 = new CreateUserRequest();
         request2.setName("User Two");
         request2.setEmail("duplicate@example.com");
 
         // When
-        ResponseEntity<User> response = restTemplate.postForEntity("/api/users", request2, User.class);
+        ResponseEntity<User> response = restTemplate.postForEntity("/api/v1/users", request2, User.class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -85,11 +85,11 @@ class UserControllerIntegrationTest extends BaseCassandraIntegrationTest {
         CreateUserRequest createRequest = new CreateUserRequest();
         createRequest.setName("Get Test User");
         createRequest.setEmail("get.test@example.com");
-        ResponseEntity<User> createResponse = restTemplate.postForEntity("/api/users", createRequest, User.class);
+        ResponseEntity<User> createResponse = restTemplate.postForEntity("/api/v1/users", createRequest, User.class);
         UUID userId = createResponse.getBody().getId();
 
         // When
-        ResponseEntity<User> response = restTemplate.getForEntity("/api/users/" + userId, User.class);
+        ResponseEntity<User> response = restTemplate.getForEntity("/api/v1/users/" + userId, User.class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -104,7 +104,7 @@ class UserControllerIntegrationTest extends BaseCassandraIntegrationTest {
         UUID nonExistentId = UUID.randomUUID();
 
         // When
-        ResponseEntity<User> response = restTemplate.getForEntity("/api/users/" + nonExistentId, User.class);
+        ResponseEntity<User> response = restTemplate.getForEntity("/api/v1/users/" + nonExistentId, User.class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -116,15 +116,17 @@ class UserControllerIntegrationTest extends BaseCassandraIntegrationTest {
         CreateUserRequest createRequest = new CreateUserRequest();
         createRequest.setName("Stats Test User");
         createRequest.setEmail("stats.test@example.com");
-        ResponseEntity<User> createResponse = restTemplate.postForEntity("/api/users", createRequest, User.class);
+        ResponseEntity<User> createResponse = restTemplate.postForEntity("/api/v1/users", createRequest, User.class);
         UUID userId = createResponse.getBody().getId();
 
-        // When
-        ResponseEntity<UserWithStats> response = restTemplate.getForEntity("/api/users/" + userId + "/stats", UserWithStats.class);
+        ResponseEntity<UserWithStats> response = restTemplate.getForEntity("/api/v1/users/" + userId + "/stats", UserWithStats.class);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
+
+        
+        assertThat(response.getBody().getUser()).isNotNull();
         assertThat(response.getBody().getUser().getId()).isEqualTo(userId);
         assertThat(response.getBody().getStats().getTotalPosts()).isEqualTo(0);
     }
@@ -135,7 +137,7 @@ class UserControllerIntegrationTest extends BaseCassandraIntegrationTest {
         CreateUserRequest createRequest = new CreateUserRequest();
         createRequest.setName("Update Test User");
         createRequest.setEmail("update.test@example.com");
-        ResponseEntity<User> createResponse = restTemplate.postForEntity("/api/users", createRequest, User.class);
+        ResponseEntity<User> createResponse = restTemplate.postForEntity("/api/v1/users", createRequest, User.class);
         UUID userId = createResponse.getBody().getId();
 
         UpdateUserRequest updateRequest = new UpdateUserRequest();
@@ -143,8 +145,8 @@ class UserControllerIntegrationTest extends BaseCassandraIntegrationTest {
         updateRequest.setEmail("updated.test@example.com");
 
         // When
-        restTemplate.put("/api/users/" + userId, updateRequest);
-        ResponseEntity<User> getResponse = restTemplate.getForEntity("/api/users/" + userId, User.class);
+        restTemplate.put("/api/v1/users/" + userId, updateRequest); // Fixed URL
+        ResponseEntity<User> getResponse = restTemplate.getForEntity("/api/v1/users/" + userId, User.class);
 
         // Then
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);

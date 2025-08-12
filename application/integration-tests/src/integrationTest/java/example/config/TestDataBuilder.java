@@ -9,10 +9,7 @@ import example.domain.ports.input.CreateUserRequest;
 import example.domain.ports.input.UpdatePostRequest;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class TestDataBuilder {
 
@@ -41,7 +38,7 @@ public class TestDataBuilder {
         post.setTitle("Test Post");
         post.setContent("Test content");
         post.setStatus("DRAFT");
-        post.setTags(Set.of("test"));
+        post.setTags(List.of("test"));
         post.setCreatedAt(now);
         post.setUpdatedAt(now);
         return post;

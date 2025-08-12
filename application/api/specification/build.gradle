@@ -1,0 +1,7 @@
+plugins {
+    id 'example.java-library-conventions'
+    id "net.linguica.maven-settings" version "0.5"
+}
+
+group = projectGroup
+version = projectVersion

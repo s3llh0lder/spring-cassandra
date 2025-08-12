@@ -6,10 +6,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 @Table("posts_by_user")
@@ -20,7 +17,7 @@ public class PostByUser {
     private String title;
     private String content;
     private String status;
-    private Set<String> tags;
+    private List<String> tags;
     @CassandraType(type = CassandraType.Name.TIMESTAMP)
     private OffsetDateTime createdAt;
     @CassandraType(type = CassandraType.Name.TIMESTAMP)
@@ -35,7 +32,7 @@ public class PostByUser {
         this.title = title;
         this.content = content;
         this.status = "DRAFT";
-        this.tags = new HashSet<>();
+        this.tags = new ArrayList<>();
         this.createdAt = now;
         this.updatedAt = now;
     }
@@ -62,8 +59,8 @@ public class PostByUser {
         this.updatedAt = OffsetDateTime.now();
     }
 
-    public Set<String> getTags() { return tags; }
-    public void setTags(Set<String> tags) { this.tags = tags; }
+    public List<String> getTags() { return tags; }
+    public void setTags(List<String> tags) { this.tags = tags; }
 
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }

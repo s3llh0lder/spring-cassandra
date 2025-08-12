@@ -25,6 +25,7 @@ configurations {
 
 dependencies {
     implementation project(':app')
+    implementation project(':domain')
     implementation project(':adapters:input:web')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
