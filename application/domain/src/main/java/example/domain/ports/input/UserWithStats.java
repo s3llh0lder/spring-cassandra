@@ -8,7 +8,8 @@ public class UserWithStats {
     private UserStats stats;
 
     // Default constructor needed for JSON deserialization
-    public UserWithStats() {}
+    public UserWithStats() {
+    }
 
     public UserWithStats(User user, UserStats stats) {
         this.user = user;
@@ -16,9 +17,19 @@ public class UserWithStats {
     }
 
     // getters and setters
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public User getUser() {
+        return user;
+    }
 
-    public UserStats getStats() { return stats; }
-    public void setStats(UserStats stats) { this.stats = stats; }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public UserStats getStats() {
+        return stats;
+    }
+
+    public void setStats(UserStats stats) {
+        this.stats = stats;
+    }
 }

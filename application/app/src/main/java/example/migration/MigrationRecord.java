@@ -1,6 +1,5 @@
 package example.migration;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,37 +24,74 @@ public class MigrationRecord {
     }
 
     // Getters and setters
-    public String getVersion() { return version; }
-    public void setVersion(String version) { this.version = version; }
+    public String getVersion() {
+        return version;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-    public OffsetDateTime getAppliedAt() { return appliedAt; }
-    public void setAppliedAt(OffsetDateTime appliedAt) { this.appliedAt = appliedAt; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getAppliedBy() { return appliedBy; }
-    public void setAppliedBy(String appliedBy) { this.appliedBy = appliedBy; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public boolean isSuccess() { return success; }
-    public void setSuccess(boolean success) { this.success = success; }
+    public OffsetDateTime getAppliedAt() {
+        return appliedAt;
+    }
 
-    public String getErrorMessage() { return errorMessage; }
-    public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
+    public void setAppliedAt(OffsetDateTime appliedAt) {
+        this.appliedAt = appliedAt;
+    }
 
-    public long getExecutionTimeMs() { return executionTimeMs; }
-    public void setExecutionTimeMs(long executionTimeMs) { this.executionTimeMs = executionTimeMs; }
+    public String getAppliedBy() {
+        return appliedBy;
+    }
+
+    public void setAppliedBy(String appliedBy) {
+        this.appliedBy = appliedBy;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public long getExecutionTimeMs() {
+        return executionTimeMs;
+    }
+
+    public void setExecutionTimeMs(long executionTimeMs) {
+        this.executionTimeMs = executionTimeMs;
+    }
 
     public static interface MigrationPort {
 
         /**
          * Get the status of all migrations
+         *
          * @return List of migration information
          */
         List<MigrationInfo> getMigrationStatus();
 
         /**
          * Run pending migrations
+         *
          * @throws Exception if migration fails
          */
         void runMigrations() throws Exception;

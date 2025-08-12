@@ -6,7 +6,9 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 @Table("posts_by_user")
@@ -24,7 +26,8 @@ public class PostByUser {
     private OffsetDateTime updatedAt;
 
     // Constructors
-    public PostByUser() {}
+    public PostByUser() {
+    }
 
     public PostByUser(UUID userId, String title, String content) {
         OffsetDateTime now = OffsetDateTime.now();
@@ -38,37 +41,71 @@ public class PostByUser {
     }
 
     // Getters and Setters
-    public PostByUserKey getKey() { return key; }
-    public void setKey(PostByUserKey key) { this.key = key; }
+    public PostByUserKey getKey() {
+        return key;
+    }
 
-    public String getTitle() { return title; }
+    public void setKey(PostByUserKey key) {
+        this.key = key;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
         this.updatedAt = OffsetDateTime.now();
     }
 
-    public String getContent() { return content; }
-    public void setContent(String content) {
-        this.content = content;
-        this.updatedAt = OffsetDateTime.now();;
+    public String getContent() {
+        return content;
     }
 
-    public String getStatus() { return status; }
+    public void setContent(String content) {
+        this.content = content;
+        this.updatedAt = OffsetDateTime.now();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public void setStatus(String status) {
         this.status = status;
         this.updatedAt = OffsetDateTime.now();
     }
 
-    public List<String> getTags() { return tags; }
-    public void setTags(List<String> tags) { this.tags = tags; }
+    public List<String> getTags() {
+        return tags;
+    }
 
-    public OffsetDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 
-    public OffsetDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(OffsetDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     // Helper methods
-    public UUID getUserId() { return key != null ? key.getUserId() : null; }
-    public UUID getPostId() { return key != null ? key.getPostId() : null; }
+    public UUID getUserId() {
+        return key != null ? key.getUserId() : null;
+    }
+
+    public UUID getPostId() {
+        return key != null ? key.getPostId() : null;
+    }
 }

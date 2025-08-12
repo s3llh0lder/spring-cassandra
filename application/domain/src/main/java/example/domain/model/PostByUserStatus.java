@@ -1,28 +1,30 @@
 package example.domain.model;
 
 import org.springframework.data.cassandra.core.mapping.CassandraType;
-import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Table("posts_by_user_status")
 public class PostByUserStatus {
-    
+
     @PrimaryKey
     private PostByUserStatusKey key;
 
     private String title;
     private String content;
     private List<String> tags;
-//    @Column("updated_at")
+    //    @Column("updated_at")
     @CassandraType(type = CassandraType.Name.TIMESTAMP)
     private OffsetDateTime updatedAt;
 
     // Constructors
-    public PostByUserStatus() {}
+    public PostByUserStatus() {
+    }
 
     public PostByUserStatus(UUID userId, String status, String title, String content) {
         OffsetDateTime now = OffsetDateTime.now();
