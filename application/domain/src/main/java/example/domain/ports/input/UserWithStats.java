@@ -7,10 +7,6 @@ public class UserWithStats {
     private User user;
     private UserStats stats;
 
-    // Default constructor needed for JSON deserialization
-    public UserWithStats() {
-    }
-
     public UserWithStats(User user, UserStats stats) {
         this.user = user;
         this.stats = stats;

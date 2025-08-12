@@ -26,14 +26,14 @@ public class PostByUserStatus {
     public PostByUserStatus() {
     }
 
-    public PostByUserStatus(UUID userId, String status, String title, String content) {
-        OffsetDateTime now = OffsetDateTime.now();
-        this.key = new PostByUserStatusKey(userId, status, now, UUID.randomUUID());
-        this.title = title;
-        this.content = content;
-        this.tags = new ArrayList<>();
-        this.updatedAt = OffsetDateTime.now();
-    }
+//    public PostByUserStatus(UUID userId, String status, String title, String content) {
+//        OffsetDateTime now = OffsetDateTime.now();
+//        this.key = new PostByUserStatusKey(userId, status, now, UUID.randomUUID());
+//        this.title = title;
+//        this.content = content;
+//        this.tags = new ArrayList<>();
+//        this.updatedAt = OffsetDateTime.now();
+//    }
 
     // Create from PostByUser
     public static PostByUserStatus fromPostByUser(PostByUser postByUser) {

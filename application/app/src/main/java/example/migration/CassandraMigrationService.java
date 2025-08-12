@@ -104,9 +104,7 @@ public class CassandraMigrationService {
         try {
             // Get all tables in the keyspace
             String getTablesQuery = """
-                    SELECT table_name FROM system_schema.tables 
-                    WHERE keyspace_name = ?
-                    """;
+                    SELECT table_name FROM system_schema.tables WHERE keyspace_name = ?""";
 
             ResultSet tablesResult = cqlSession.execute(getTablesQuery, keyspace);
             List<String> tableNames = new ArrayList<>();

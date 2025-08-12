@@ -98,9 +98,7 @@ public class ConcurrentTestUtils {
             try {
                 List<T> threadResults = future.get(30, TimeUnit.SECONDS);
                 logger.debug("Thread {} returned {} results", threadIndex, threadResults.size());
-                if (threadResults != null) {
-                    allResults.addAll(threadResults);
-                }
+                allResults.addAll(threadResults);
                 threadIndex++;
             } catch (ExecutionException e) {
                 executor.shutdownNow();
